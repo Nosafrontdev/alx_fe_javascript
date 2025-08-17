@@ -156,3 +156,16 @@ if (quoteDisplay && newQuoteBtn) {
     // Link function to button
     newQuoteBtn.addEventListener('click', showRandomQuote);
 }
+const exportBtn = document.getElementById('exportQuotes');
+
+if (exportBtn) {
+    exportBtn.addEventListener('click', () => {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(quotes, null, 2));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", "quotes.json");
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        document.body.removeChild(downloadAnchor);
+    });
+}
