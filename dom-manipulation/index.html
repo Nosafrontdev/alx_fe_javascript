@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dynamic Quote Generator</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
   <nav>
@@ -12,17 +12,39 @@
     <button><a href="index2.html">Create Quote</a></button>
   </nav>
 
+  <!-- Sync/notification banner -->
+  <div id="syncStatus" aria-live="polite"></div>
+
+  <!-- Optional conflict center -->
+  <div id="conflictBar" class="hidden">
+    <span id="conflictMsg">Conflicts detected.</span>
+    <button id="reviewConflictsBtn">Review</button>
+  </div>
+
   <section>
-    <!-- ✅ Category Filter Dropdown -->
+    <!-- Category Filter Dropdown (persistent) -->
     <select id="categoryFilter" onchange="filterQuotes()">
       <option value="all">All Categories</option>
     </select>
 
     <div id="quoteDisplay"></div>
 
-    <button id="newQuote">Show New Quote</button>
-    <button id="exportQuotes">Export Quotes</button>
-    <input id="importQuotes" type="file" accept="application/json">
+    <div class="actions">
+      <button id="newQuote">Show New Quote</button>
+      <button id="exportQuotes">Export Quotes</button>
+      <input id="importQuotes" type="file" accept="application/json" />
+      <button id="syncNow">Sync Now</button>
+    </div>
+  </section>
+
+  <!-- Conflict resolution panel -->
+  <section id="conflictPanel" class="hidden">
+    <h2>Resolve Conflicts</h2>
+    <div id="conflictList"></div>
+    <div class="actions">
+      <button id="applyConflictResolutions">Apply Choices</button>
+      <button id="cancelConflicts">Cancel</button>
+    </div>
   </section>
 
   <script src="script.js"></script>
