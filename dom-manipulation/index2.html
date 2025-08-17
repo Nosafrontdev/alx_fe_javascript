@@ -8,18 +8,20 @@
 </head>
 <body>
   <nav>
-    <button><a href="index.html"> Homepage</a></button>
+    <h1>Add a New Quote</h1>
+    <button><a href="index.html">Home</a></button>
   </nav>
 
-  <!-- Form will be created dynamically -->
-  <div id="formContainer"></div>
+  <section>
+    <form id="addQuoteForm">
+      <input type="text" id="newQuoteText" placeholder="Enter quote" required>
+      <input type="text" id="newQuoteCategory" placeholder="Enter category" required>
+      <button type="submit" id="addQuoteBtn">Add Quote</button>
+    </form>
 
-  <div id="quoteList"></div>
+    <div id="quoteList"></div>
+  </section>
 
   <script src="script.js"></script>
-  <script>
-    // ✅ Build the form dynamically
-    createAddQuoteForm();
-  </script>
 </body>
 </html>

@@ -1,148 +1,38 @@
-/* ==============================
-   Global Styles
-============================== */
 body {
   font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f4f4f9;
-  color: #333;
+  margin: 20px;
 }
 
-h1, h2 {
-  margin: 0;
-  padding: 10px;
-}
-
-button, select, input {
-  font-family: inherit;
-  font-size: 16px;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  margin: 5px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-button:hover {
-  background: #e0e0e0;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-/* ==============================
-   Navigation Bar
-============================== */
 nav {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 12px 20px;
-  background-color: #555;
-  color: white;
+  margin-bottom: 20px;
 }
 
-nav h1 {
-  font-size: 20px;
-}
-
-nav button {
-  background: #fff;
-  color: #333;
-  font-weight: bold;
-}
-
-nav button:hover {
-  background: #ddd;
-}
-
-/* ==============================
-   Homepage Layout
-============================== */
-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px 20px;
+button, select, input[type="text"] {
+  margin: 5px;
+  padding: 8px 12px;
+  font-size: 14px;
 }
 
 #quoteDisplay {
-  margin: 20px 0;
-  width: 100%;
-  max-width: 600px;
+  margin-top: 20px;
 }
 
-/* ==============================
-   Quote Card Styling
-============================== */
 .quote-card {
-  background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 16px 20px;
-  margin: 12px 0;
-  box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease;
+  border-radius: 6px;
+  padding: 10px;
+  margin: 10px 0;
+  background: #f9f9f9;
 }
 
-.quote-card:hover {
-  transform: scale(1.02);
-}
-
-/* Quote text */
 .quote-body {
-  font-size: 18px;
   font-style: italic;
-  margin-bottom: 8px;
-  color: #222;
+  margin-bottom: 6px;
 }
 
-/* Quote category */
 .quote-category {
-  font-size: 14px;
-  color: #d62828;
-  font-weight: bold;
-}
-
-/* ==============================
-   Create Page Styling
-============================== */
-#quoteList {
-  margin-top: 20px;
-  padding: 0 20px;
-}
-
-input[type="text"] {
-  width: 250px;
-}
-
-div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 20px;
-}
-
-div input, div button {
-  margin: 8px 0;
-  width: 280px;
-  max-width: 90%;
-}
-
-/* ==============================
-   Dropdown Styling
-============================== */
-#categorySelect {
-  margin-bottom: 15px;
-  width: 200px;
-  background: #fff;
-}
-
-#categorySelect:focus {
-  outline: none;
-  border-color: #888;
+  font-size: 12px;
+  color: #555;
 }
