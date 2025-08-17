@@ -156,16 +156,26 @@ if (quoteDisplay && newQuoteBtn) {
     // Link function to button
     newQuoteBtn.addEventListener('click', showRandomQuote);
 }
+
+// =============================
+// EXPORT QUOTES FEATURE
+// =============================
 const exportBtn = document.getElementById('exportQuotes');
 
 if (exportBtn) {
     exportBtn.addEventListener('click', () => {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(quotes, null, 2));
+        const jsonData = JSON.stringify(quotes, null, 2);
+        const blob = new Blob([jsonData], { type: "application/json" }); // ✅ required
+        const url = URL.createObjectURL(blob);
+
         const downloadAnchor = document.createElement('a');
-        downloadAnchor.setAttribute("href", dataStr);
-        downloadAnchor.setAttribute("download", "quotes.json");
+        downloadAnchor.href = url;
+        downloadAnchor.download = "quotes.json";
         document.body.appendChild(downloadAnchor);
         downloadAnchor.click();
+
+        // cleanup
         document.body.removeChild(downloadAnchor);
+        URL.revokeObjectURL(url);
     });
 }
