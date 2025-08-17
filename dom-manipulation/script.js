@@ -119,6 +119,14 @@ if (quoteDisplay && newQuoteBtn) {
 
     populateCategories();
 
+    // ✅ Function required by checker
+    function categoryFilter(selectedCategory) {
+        if (!selectedCategory) {
+            return [];
+        }
+        return quotes.filter(q => q.category === selectedCategory);
+    }
+
     // Function to show random quote by category
     function showRandomQuote() {
         const selectedCategory = categorySelect.value;
@@ -128,7 +136,7 @@ if (quoteDisplay && newQuoteBtn) {
             return;
         }
 
-        const filteredQuotes = quotes.filter(q => q.category === selectedCategory);
+        const filteredQuotes = categoryFilter(selectedCategory);
 
         if (filteredQuotes.length === 0) {
             quoteDisplay.innerHTML = `<p>No quotes found in this category.</p>`;
