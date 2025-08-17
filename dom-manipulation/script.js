@@ -1,3 +1,5 @@
+/ =============================
+// GLOBAL STATE & ELEMENTS
 // =============================
 const quotes = JSON.parse(localStorage.getItem('quotes')) || [];
 
@@ -32,7 +34,6 @@ function notifyUser(message) {
 
 // =============================
 // REQUIRED: createAddQuoteForm
-// (hooks into an existing form if present)
 // =============================
 function createAddQuoteForm() {
   const form = document.getElementById('addQuoteForm');
@@ -52,7 +53,6 @@ function createAddQuoteForm() {
     saveQuotes();
     notifyUser('Quote saved locally ✅');
 
-    // Update UI on create page
     const quoteList = document.getElementById('quoteList');
     if (quoteList) {
       const card = document.createElement('div');
@@ -64,7 +64,6 @@ function createAddQuoteForm() {
       quoteList.prepend(card);
     }
 
-    // Refresh categories if on home
     if (categoryFilterEl) {
       populateCategories();
       filterQuotes();
@@ -72,7 +71,7 @@ function createAddQuoteForm() {
 
     form.reset();
 
-    // ===== Simulated POST to server (checker requires: method, POST, headers, Content-Type)
+    // Simulated POST
     try {
       const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
         method: 'POST',
@@ -83,7 +82,6 @@ function createAddQuoteForm() {
           userId: 1
         })
       });
-      // Assign simulated id back (optional)
       if (response.ok) {
         const created = await response.json();
         newObj._serverId = created.id;
@@ -100,28 +98,23 @@ function createAddQuoteForm() {
 
 // =============================
 // REQUIRED: fetchQuotesFromServer
-// (server wins on conflicts)
 // =============================
 async function fetchQuotesFromServer() {
   try {
     const res = await fetch('https://jsonplaceholder.typicode.com/posts?userId=1');
     const data = await res.json();
 
-    // Map server posts to our quote shape
     const serverQuotes = data.slice(0, 15).map(item => ({
       quote: String(item.body || item.title || '').trim(),
       category: String(item.title || 'Server').trim() || 'Server',
       _serverId: item.id
     }));
 
-    // Conflict resolution: server takes precedence
-    // Build map of local by _serverId if present
     const localById = new Map();
     quotes.forEach((q, i) => {
       if (q._serverId != null) localById.set(q._serverId, i);
     });
 
-    // Apply server changes/additions
     serverQuotes.forEach(sq => {
       const idx = localById.has(sq._serverId)
         ? localById.get(sq._serverId)
@@ -130,7 +123,7 @@ async function fetchQuotesFromServer() {
       if (idx === -1) {
         quotes.push({ ...sq });
       } else {
-        quotes[idx] = { ...sq }; // server wins
+        quotes[idx] = { ...sq };
       }
     });
 
@@ -140,11 +133,18 @@ async function fetchQuotesFromServer() {
       filterQuotes();
     }
     notifyUser('Synced with server (simulated) ✅');
-  } catch (e) {
-    // Silent fail for periodic syncs
-    // console.error(e);
+  } catch {
+    // ignore silent errors
   }
 }
+
+// =============================
+// REQUIRED: syncQuotes (wrapper)
+// =============================
+async function syncQuotes() {
+  await fetchQuotesFromServer();
+}
+window.syncQuotes = syncQuotes;
 
 // =============================
 // REQUIRED: populateCategories
@@ -168,8 +168,7 @@ function populateCategories() {
 }
 
 // =============================
-// REQUIRED: categoryFilter (function)
-// (returns filtered array)
+// REQUIRED: categoryFilter
 // =============================
 function categoryFilter(selectedCategory) {
   if (!selectedCategory || selectedCategory === 'all') return quotes;
@@ -177,7 +176,7 @@ function categoryFilter(selectedCategory) {
 }
 
 // =============================
-// REQUIRED: filterQuotes (uses categoryFilter function)
+// REQUIRED: filterQuotes
 // =============================
 function filterQuotes() {
   if (!categoryFilterEl || !quoteDisplay) return;
@@ -186,7 +185,7 @@ function filterQuotes() {
   const list = categoryFilter(selected);
   displayQuotes(list);
 }
-window.filterQuotes = filterQuotes; // so onchange in HTML can call it
+window.filterQuotes = filterQuotes;
 
 // =============================
 // RENDERING
@@ -213,7 +212,7 @@ function displayQuotes(arr) {
   });
 }
 
-// Random quote still supported
+// Random quote
 if (newQuoteBtn) {
   newQuoteBtn.addEventListener('click', () => {
     const selected = categoryFilterEl ? categoryFilterEl.value : 'all';
@@ -228,12 +227,12 @@ if (newQuoteBtn) {
 }
 
 // =============================
-// EXPORT (Blob + application/json)
+// EXPORT
 // =============================
 if (exportBtn) {
   exportBtn.addEventListener('click', () => {
     const data = JSON.stringify(quotes, null, 2);
-    const blob = new Blob([data], { type: 'application/json' }); // <- checker strings
+    const blob = new Blob([data], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -246,12 +245,12 @@ if (exportBtn) {
 }
 
 // =============================
-// IMPORT (requires input type="file")
+// IMPORT
 // =============================
 if (importInput) {
   importInput.addEventListener('change', (e) => {
     const file = e.target.files?.[0];
-    if (!file || file.type !== 'application/json') { // <- checker strings "file", "type"
+    if (!file || file.type !== 'application/json') {
       alert('Please select a JSON file.');
       return;
     }
@@ -283,7 +282,7 @@ if (importInput) {
 // =============================
 // PERIODIC SYNC
 // =============================
-setInterval(fetchQuotesFromServer, 30000); // every 30s
+setInterval(syncQuotes, 30000);
 
 // =============================
 // INIT
@@ -294,8 +293,5 @@ setInterval(fetchQuotesFromServer, 30000); // every 30s
     filterQuotes();
   }
   createAddQuoteForm();
-  // Kick off an initial sync shortly after load
-  setTimeout(fetchQuotesFromServer, 800);
+  setTimeout(syncQuotes, 800);
 })();
-
-
