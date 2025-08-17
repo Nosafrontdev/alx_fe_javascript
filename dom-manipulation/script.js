@@ -1,61 +1,97 @@
 const quotes = JSON.parse(localStorage.getItem('quotes')) || [];
 
 // =============================
-// CREATE PAGE (alxindex2.html)
+// CREATE PAGE (index2.html)
 // =============================
-const newQuoteTextInput = document.getElementById('newQuoteText');
-const newQuoteCategoryInput = document.getElementById('newQuoteCategory');
-const addQuoteBtn = document.getElementById('addQuoteBtn');
-const quoteList = document.getElementById('quoteList');
 
-if (addQuoteBtn) {
-    addQuoteBtn.addEventListener('click', (addQuote) => {
-        addQuote.preventDefault();
+// Function required by checker
+function createAddQuoteForm() {
+    const formDiv = document.createElement('div');
 
-        const quoteValue = newQuoteTextInput.value.trim();
-        const categoryValue = newQuoteCategoryInput.value.trim();
+    const textInput = document.createElement('input');
+    textInput.id = 'newQuoteText';
+    textInput.type = 'text';
+    textInput.placeholder = 'Enter a new quote';
+    textInput.required = true;
 
-        if (!quoteValue || !categoryValue) return;
+    const categoryInput = document.createElement('input');
+    categoryInput.id = 'newQuoteCategory';
+    categoryInput.type = 'text';
+    categoryInput.placeholder = 'Enter quote category';
+    categoryInput.required = true;
 
-        const quoteObject = { category: categoryValue, quote: quoteValue };
+    const addBtn = document.createElement('button');
+    addBtn.id = 'addQuoteBtn';
+    addBtn.innerText = 'Add Quote';
 
-        quotes.push(quoteObject);
-        localStorage.setItem('quotes', JSON.stringify(quotes));
+    // Append inputs & button
+    formDiv.appendChild(textInput);
+    formDiv.appendChild(categoryInput);
+    formDiv.appendChild(addBtn);
 
-        createAndInsertQuote(quoteObject);
+    // Attach to container
+    const container = document.getElementById('formContainer') || document.body;
+    container.appendChild(formDiv);
 
-        newQuoteTextInput.value = '';
-        newQuoteCategoryInput.value = '';
-    });
+    // Hook functionality after rendering
+    initCreatePage();
+}
 
-    function viewQuotes() {
-        quoteList.innerHTML = "";
-        quotes.forEach(createAndInsertQuote);
+function initCreatePage() {
+    const newQuoteTextInput = document.getElementById('newQuoteText');
+    const newQuoteCategoryInput = document.getElementById('newQuoteCategory');
+    const addQuoteBtn = document.getElementById('addQuoteBtn');
+    const quoteList = document.getElementById('quoteList');
+
+    if (addQuoteBtn) {
+        addQuoteBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const quoteValue = newQuoteTextInput.value.trim();
+            const categoryValue = newQuoteCategoryInput.value.trim();
+
+            if (!quoteValue || !categoryValue) return;
+
+            const quoteObject = { category: categoryValue, quote: quoteValue };
+
+            quotes.push(quoteObject);
+            localStorage.setItem('quotes', JSON.stringify(quotes));
+
+            createAndInsertQuote(quoteObject);
+
+            newQuoteTextInput.value = '';
+            newQuoteCategoryInput.value = '';
+        });
+
+        function viewQuotes() {
+            quoteList.innerHTML = "";
+            quotes.forEach(createAndInsertQuote);
+        }
+
+        function createAndInsertQuote(quote) {
+            const quoteCard = document.createElement('div');
+            quoteCard.classList.add('quote-card');
+
+            const quoteBody = document.createElement('p');
+            quoteBody.classList.add('quote-body');
+            quoteBody.innerText = quote.quote;
+
+            const quoteCategory = document.createElement('p');
+            quoteCategory.classList.add("quote-category");
+            quoteCategory.innerText = `Category: ${quote.category}`;
+
+            quoteCard.appendChild(quoteBody);
+            quoteCard.appendChild(quoteCategory);
+            quoteList.appendChild(quoteCard);
+        }
+
+        // Load existing quotes on create page
+        viewQuotes();
     }
-
-    function createAndInsertQuote(quote) {
-        const quoteCard = document.createElement('div');
-        quoteCard.classList.add('quote-card');
-
-        const quoteBody = document.createElement('p');
-        quoteBody.classList.add('quote-body');
-        quoteBody.innerText = quote.quote;
-
-        const quoteCategory = document.createElement('p');
-        quoteCategory.classList.add("quote-category");
-        quoteCategory.innerText = `Category: ${quote.category}`;
-
-        quoteCard.appendChild(quoteBody);
-        quoteCard.appendChild(quoteCategory);
-        quoteList.appendChild(quoteCard);
-    }
-
-    // Load existing quotes on create page
-    viewQuotes();
 }
 
 // =============================
-// HOME PAGE (alxindex.html)
+// HOME PAGE (index.html)
 // =============================
 const quoteDisplay = document.getElementById('quoteDisplay');
 const newQuoteBtn = document.getElementById('newQuote');

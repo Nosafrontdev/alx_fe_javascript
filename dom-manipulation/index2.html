@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Quote</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Quote</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav>
+  <nav>
     <button><a href="index.html"> Homepage</a></button>
-   </nav>
+  </nav>
 
-    <div>
-    <input id="newQuoteText" type="text" placeholder="Enter a new quote" required/>
-    <input id="newQuoteCategory" type="text" placeholder="Enter quote category" required/>
-    <button id="addQuoteBtn">Add Quote</button>
-  </div>
+  <!-- Form will be created dynamically -->
+  <div id="formContainer"></div>
 
   <div id="quoteList"></div>
 
-  <script src = "script.js"></script>
+  <script src="script.js"></script>
+  <script>
+    // ✅ Build the form dynamically
+    createAddQuoteForm();
+  </script>
 </body>
 </html>
